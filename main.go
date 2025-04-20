@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/ckrinitsin/go-backend/handlers"
+	"github.com/ckrinitsin/go-backend/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,6 +15,8 @@ var templatesFS embed.FS
 
 func main() {
 	r := gin.Default()
+
+	models.ConnectDatabase()
 
 	tmpl := template.Must(template.ParseFS(templatesFS, "templates/*"))
 	r.SetHTMLTemplate(tmpl)
