@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> {{ .Name }}</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2d353b; /* Dark background color */
+            color: #d3c6aa; /* Text color */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            padding: 2rem;
+            width: 300px;
+            max-height: 100%;
+        }
+
+        .checklist {
+            max-height: 500px; /* Adjust max-height as needed */
+            overflow-y: auto; /* Enable vertical scrolling */
+            padding: 10px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Align items evenly */
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            border: 1px solid #d3c6aa;
+            border-radius: 4px;
+            height: 25px;
+        }
+
+        li > div {
+            display: flex;
+            align-items: center;
+        }
+
+        li > div > button {
+            width: 30px; /* Fixed width for delete button */
+            margin-left: 10px; /* Adjust as needed */
+        }
+
+        li.selected {
+            text-decoration: line-through;
+            color: #475258;
+            border: 1px solid #475258;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 1rem;
+        }
+
+        button {
+            display: block;
+            padding: 0.5rem;
+            border: none;
+            background-color: #d3c6aa;
+            color: #2d353b;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button.delete {
+            width: 30px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .add-button,
+        .delete-button {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .add-button {
+            order: 1; /* Display on the left */
+        }
+
+        .delete-button {
+            order: 2; /* Display on the right */
+            width: 200px;
+        }
+
+        .input-container{
+            position:relative;
+            margin-bottom:25px;
+            margin-top:25px;
+        }
+        .input-container label{
+            position:absolute;
+            top:0px;
+            left:0px;
+            font-size:16px;
+            color:#fff;	
+            pointer-event:none;
+            transition: all 0.5s ease-in-out;
+        }
+        .input-container input{
+          border:0;
+          border-bottom:1px solid #555;
+          background:transparent;
+          width:100%;
+          padding:8px 0 5px 0;
+          font-size:16px;
+          color:#d3c6aa;
+        }
+        .input-container input:focus{
+         border:none;	
+         outline:none;
+         border-bottom:1px solid #d3c6aa;	
+        }
+        .input-container input:focus ~ label,
+        .input-container input:valid ~ label{
+            top:-12px;
+            font-size:12px;
+            
+        }
+
+        /* settings for mini phones (my unihertz jelly) */
+        @media (max-width: 280px) {
+          h1 {
+            font-size: 0;
+            height: 0;
+            margin: 0;
+          }
+          li {
+            height: 18px;
+            margin: 0.3rem 0;
+          }
+          .container {
+            width: 268px; /* Scale font sizes */
+            height: 100%;
+            margin: 0;
+          }
+          .checklist {
+            height: 300px;
+            margin: 0;
+            padding: 3px;
+            padding-top: 0;
+          }
+          .input-container {
+            margin: 6px;
+          }
+          .delete-button {
+            width: 170px;
+          }
+        }
+
+
+        /* Scrollbar styles for WebKit browsers (Chrome, Safari) */
+
+        /* Track */
+        ::-webkit-scrollbar {
+            width: 10px; /* Width of the scrollbar */
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background-color: #3d484d; /* Color of the scrollbar handle */
+            border-radius: 5px; /* Rounded corners of the handle */
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #475258; /* Darker color on hover */
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: transparent; /* Color of the scrollbar track */
+        }
+
+        /* Corner */
+        ::-webkit-scrollbar-corner {
+            background: transparent; /* Background color of the scrollbar corner */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ .Name }}</h1>
+        <ul class="checklist" id="checklist"></ul>
+
+        <div class="input-container">
+            <input type="text" id="newItem" tabindex="0"/>
+        </div>
+
+        <div class="buttons">
+            <button onclick="addItem()" class="add-button">Add Item</button>
+            <button onclick="deleteItems()" class="delete-button">Delete Selected Items</button>
+        </div>
+    </div>
+</body>
+</html>

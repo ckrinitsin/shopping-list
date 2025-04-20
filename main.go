@@ -1,17 +1,30 @@
 package main
 
 import (
+	"embed"
+	"html/template"
 	"net/http"
 
+	"github.com/ckrinitsin/go-backend/handlers"
 	"github.com/gin-gonic/gin"
 )
 
+//go:embed templates/*
+var templatesFS embed.FS
+
 func main() {
 	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
+
+	tmpl := template.Must(template.ParseFS(templatesFS, "templates/*"))
+	r.SetHTMLTemplate(tmpl)
+
+	r.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
+			"health-check": "passed",
 		})
 	})
-	r.Run("127.0.0.1:8081") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+
+	r.GET("/shopping", shopping_list.LoadElements)
+
+	r.Run()
 }
