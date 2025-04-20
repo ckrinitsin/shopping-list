@@ -14,8 +14,8 @@
 
         body {
             font-family: Arial, sans-serif;
-            background-color: #2d353b; /* Dark background color */
-            color: #d3c6aa; /* Text color */
+            background-color: #2d353b;
+            color: #d3c6aa;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -29,8 +29,8 @@
         }
 
         .checklist {
-            max-height: 500px; /* Adjust max-height as needed */
-            overflow-y: auto; /* Enable vertical scrolling */
+            max-height: 500px;
+            overflow-y: auto;
             padding: 10px;
         }
 
@@ -46,7 +46,7 @@
         li {
             display: flex;
             align-items: center;
-            justify-content: space-between; /* Align items evenly */
+            justify-content: space-between;
             margin: 0.5rem 0;
             padding: 0.5rem;
             border: 1px solid #d3c6aa;
@@ -59,56 +59,21 @@
             align-items: center;
         }
 
-        li > div > button {
-            width: 30px; /* Fixed width for delete button */
-            margin-left: 10px; /* Adjust as needed */
-        }
-
         li.selected {
             text-decoration: line-through;
             color: #475258;
             border: 1px solid #475258;
         }
 
-        input[type="checkbox"] {
-            margin-right: 1rem;
-        }
-
         button {
             display: block;
-            padding: 0.5rem;
+            padding: 10px 20px;
             border: none;
             background-color: #d3c6aa;
             color: #2d353b;
             border-radius: 4px;
             cursor: pointer;
-        }
-
-        button.delete {
-            width: 30px;
-            text-decoration: none;
-            text-align: center;
-        }
-
-        .buttons {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .add-button,
-        .delete-button {
-            padding: 10px 20px;
-            cursor: pointer;
-        }
-
-        .add-button {
-            order: 1; /* Display on the left */
-        }
-
-        .delete-button {
-            order: 2; /* Display on the right */
-            width: 200px;
+            width: 100%
         }
 
         .input-container{
@@ -146,7 +111,7 @@
             
         }
 
-        /* settings for mini phones (my unihertz jelly) */
+        /* settings for mini phones */
         @media (max-width: 280px) {
           h1 {
             font-size: 0;
@@ -176,9 +141,7 @@
           }
         }
 
-
         /* Scrollbar styles for WebKit browsers (Chrome, Safari) */
-
         /* Track */
         ::-webkit-scrollbar {
             width: 10px; /* Width of the scrollbar */
@@ -211,14 +174,19 @@
         <h1>{{ .Name }}</h1>
         <ul class="checklist" id="checklist"></ul>
 
-        <div class="input-container">
-            <input type="text" id="newItem" tabindex="0"/>
-        </div>
 
-        <div class="buttons">
-            <button onclick="addItem()" class="add-button">Add Item</button>
-            <button onclick="deleteItems()" class="delete-button">Delete Selected Items</button>
-        </div>
+        <form action="/create" method="POST">
+            <div class="input-container">
+                <input type="text" id="newItem" name="item" tabindex="0"/>
+            </div>
+        </form>
+
+        <form action="/delete" method="POST">
+            <div class="buttons">
+                <button type="submit" class="delete-button">Delete Selected Items</button>
+            </div>
+        </form>
+
     </div>
 </body>
 </html>
