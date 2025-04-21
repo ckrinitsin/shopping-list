@@ -11,3 +11,18 @@ func LoadElements(c *gin.Context) {
 		"Name": "Shopping List",
 	})
 }
+
+func CreateEntry(c *gin.Context) {
+
+	c.Redirect(http.StatusFound, "/")
+}
+
+func DeleteEntries(c *gin.Context) {
+
+	c.Redirect(http.StatusFound, "/")
+}
+
+func ToggleEntry(c *gin.Context) {
+
+	c.Redirect(http.StatusFound, "/")
+}

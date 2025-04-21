@@ -27,7 +27,10 @@ func main() {
 		})
 	})
 
-	r.GET("/shopping", shopping_list.LoadElements)
+	r.GET("/", shopping_list.LoadElements)
+	r.POST("/create", shopping_list.CreateEntry)
+	r.POST("/delete", shopping_list.DeleteEntries)
+	r.POST("/toggle", shopping_list.ToggleEntry)
 
 	r.Run()
 }

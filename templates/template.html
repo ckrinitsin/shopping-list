@@ -54,11 +54,6 @@
             height: 25px;
         }
 
-        li > div {
-            display: flex;
-            align-items: center;
-        }
-
         li.selected {
             text-decoration: line-through;
             color: #475258;
@@ -172,8 +167,21 @@
 <body>
     <div class="container">
         <h1>{{ .Name }}</h1>
-        <ul class="checklist" id="checklist"></ul>
+        <ul class="checklist" id="checklist">
+                <li>not selected</li>
 
+                <li>
+                test not selected
+                <form action="/toggle" method="POST">
+                    <input type="hidden" name="id" value="<test-id>" />
+                    <button type="submit" />
+                </form>
+                </li>
+
+
+                <li class="selected">selected</li>
+
+        </ul>
 
         <form action="/create" method="POST">
             <div class="input-container">
@@ -182,9 +190,7 @@
         </form>
 
         <form action="/delete" method="POST">
-            <div class="buttons">
-                <button type="submit" class="delete-button">Delete Selected Items</button>
-            </div>
+            <button type="submit" class="delete-button">Delete Selected Items</button>
         </form>
 
     </div>
