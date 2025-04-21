@@ -186,11 +186,11 @@
 
         <form action="{{ .base_path }}create" method="POST">
             <div class="input-container">
-                <input type="text" id="newItem" name="newItem" tabindex="0"/>
+                <input type="text" id="newItem" name="newItem" tabindex="0" autofocus/>
             </div>
         </form>
 
-            <form action="{{ .base_path }}delete" method="POST">
+            <form action="{{ .base_path }}delete" method="POST" onsubmit="return confirm('Are you sure you want to delete all checked entries?')">
             <button type="submit" class="delete-button">Delete Selected Items</button>
         </form>
 
