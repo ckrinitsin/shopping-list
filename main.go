@@ -5,8 +5,8 @@ import (
 	"html/template"
 	"net/http"
 
-	"github.com/ckrinitsin/go-backend/handlers"
-	"github.com/ckrinitsin/go-backend/models"
+	"github.com/ckrinitsin/shopping-list/handlers"
+	"github.com/ckrinitsin/shopping-list/models"
 	"github.com/gin-gonic/gin"
 )
 

@@ -1,4 +1,4 @@
-module github.com/ckrinitsin/go-backend
+module github.com/ckrinitsin/shopping-list
 
 go 1.23.5
 

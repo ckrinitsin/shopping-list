@@ -3,7 +3,7 @@ package shopping_list
 import (
 	"net/http"
 
-	"github.com/ckrinitsin/go-backend/models"
+	"github.com/ckrinitsin/shopping-list/models"
 	"github.com/gin-gonic/gin"
 )
 
