@@ -2,13 +2,22 @@ package shopping_list
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/ckrinitsin/shopping-list/models"
 	"github.com/gin-gonic/gin"
 )
 
-func LoadElements(c *gin.Context) {
+func getBasePath() string {
+	basePath := os.Getenv("BASE_PATH")
+	if basePath == "" {
+		basePath = "/"
+	}
 
+	return basePath
+}
+
+func LoadElements(c *gin.Context) {
 	title := "Shopping List"
 	var entries []models.Entry
 
@@ -24,8 +33,9 @@ func LoadElements(c *gin.Context) {
 	}
 
 	c.HTML(http.StatusOK, "template.html", gin.H{
-		"name":    title,
-		"entries": entries,
+		"name":      title,
+		"entries":   entries,
+		"base_path": getBasePath(),
 	})
 }
 
@@ -46,13 +56,13 @@ func CreateEntry(c *gin.Context) {
 		return
 	}
 
-	c.Redirect(http.StatusFound, "/")
+	c.Redirect(http.StatusFound, getBasePath() + "/")
 }
 
 func DeleteEntries(c *gin.Context) {
 	models.DB.Delete(&models.Entry{}, "checked = 1")
 
-	c.Redirect(http.StatusFound, "/")
+	c.Redirect(http.StatusFound, getBasePath() + "/")
 }
 
 func ToggleEntry(c *gin.Context) {
@@ -79,5 +89,5 @@ func ToggleEntry(c *gin.Context) {
 		return
 	}
 
-	c.Redirect(http.StatusFound, "/")
+	c.Redirect(http.StatusFound, getBasePath() + "/")
 }
