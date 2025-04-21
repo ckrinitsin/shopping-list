@@ -176,7 +176,7 @@
                 {{ end }}
 
                 {{ .Text }}
-                <form action="/toggle" method="POST">
+                <form action="toggle" method="POST">
                     <input type="hidden" name="id" value="{{ .ID }}" />
                     <button type="submit" />
                 </form>
@@ -184,13 +184,13 @@
             {{ end }}
         </ul>
 
-        <form action="/create" method="POST">
+        <form action="create" method="POST">
             <div class="input-container">
                 <input type="text" id="newItem" name="newItem" tabindex="0"/>
             </div>
         </form>
 
-        <form action="/delete" method="POST">
+        <form action="delete" method="POST">
             <button type="submit" class="delete-button">Delete Selected Items</button>
         </form>
 
