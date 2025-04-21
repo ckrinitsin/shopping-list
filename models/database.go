@@ -8,7 +8,7 @@ import (
 )
 
 type Entry struct {
-	ID        uint
+	ID        uint `gorm:"primaryKey"`
 	Text      string
 	Checked   bool
 	CreatedAt time.Time
