@@ -13,6 +13,7 @@ func LoadElements(c *gin.Context) {
 	var entries []models.Entry
 
 	err := models.DB.
+		Order("checked asc").
 		Find(&entries).
 		Error
 
