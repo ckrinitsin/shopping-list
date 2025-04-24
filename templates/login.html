@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ .name }} - List</title>
+    <title> Login </title>
     <style>
         html, body {
             width: 100%;
@@ -135,68 +135,32 @@
             width: 170px;
           }
         }
-
-        /* Scrollbar styles for WebKit browsers (Chrome, Safari) */
-        /* Track */
-        ::-webkit-scrollbar {
-            width: 10px; /* Width of the scrollbar */
-        }
-
-        /* Handle */
-        ::-webkit-scrollbar-thumb {
-            background-color: #3d484d; /* Color of the scrollbar handle */
-            border-radius: 5px; /* Rounded corners of the handle */
-        }
-
-        /* Handle on hover */
-        ::-webkit-scrollbar-thumb:hover {
-            background-color: #475258; /* Darker color on hover */
-        }
-
-        /* Track */
-        ::-webkit-scrollbar-track {
-            background: transparent; /* Color of the scrollbar track */
-        }
-
-        /* Corner */
-        ::-webkit-scrollbar-corner {
-            background: transparent; /* Background color of the scrollbar corner */
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>{{ .name }} - List</h1>
-        <ul class="checklist" id="checklist">
-            {{ range .entries }}
-                {{ if .Checked }}
-                    <li class="selected">
-                {{ else }}
-                    <li>
-                {{ end }}
+        <h1>Login</h1>
 
-                {{ .Text }}
-                <form action="{{ $.base_path }}toggle" method="POST">
-                    <input type="hidden" name="id" value="{{ .ID }}" />
-                    <button type="submit" />
-                </form>
-                </li>
-            {{ end }}
-        </ul>
+        <p style="color: #e67e80;">
+            {{ .error }} 
+        </p>
 
-        <form action="{{ .base_path }}create" method="POST">
+        <form action="{{ .base_path }}login" method="POST">
             <div class="input-container">
-                <input type="text" id="newItem" name="newItem" tabindex="0" autofocus/>
+                Username:
+                <input type="text" id="newItem" name="username" tabindex="0"/>
+
             </div>
-        </form>
-
-        <form action="{{ .base_path }}delete" method="POST" onsubmit="return confirm('Are you sure you want to delete all checked entries?')">
-            <button type="submit" class="delete-button">Delete Selected Items</button>
-        </form>
-
-        <form action="{{ .base_path }}logout" method="POST" onsubmit="return confirm('Are you sure you want to logout?')">
             <div class="input-container">
-                <button type="submit" class="delete-button">Logout</button>
+                Password:
+                <input type="password" id="newItem" name="password" tabindex="0"/>
+            </div>
+            <button class="delete-button"> Login </button>
+        </form>
+
+        <form action="{{ .base_path }}register" method="GET">
+            <div class="input-container">
+                <button class="delete-button"> Register </button>
             </div>
         </form>
 
