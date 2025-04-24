@@ -224,3 +224,10 @@ func RegisterPOST(c *gin.Context) {
 
 	c.Redirect(http.StatusFound, "/login")
 }
+
+func Logout(c *gin.Context) {
+	session := sessions.Default(c)
+	session.Delete("token")
+	session.Save()
+	c.Redirect(http.StatusFound, "/login")
+}
