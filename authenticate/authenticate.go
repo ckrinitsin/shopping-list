@@ -20,13 +20,13 @@ func CheckAuth(c *gin.Context) {
 	token_session := session.Get("token")
 
 	if token_session == nil {
-		c.Redirect(http.StatusFound, "/login")
+		c.Redirect(http.StatusFound, models.BasePath() + "/login")
 		return
 	}
 
 	token_string, ok := token_session.(string)
 	if !ok {
-		c.Redirect(http.StatusFound, "/login")
+		c.Redirect(http.StatusFound, models.BasePath() + "/login")
 		return
 	}
 
@@ -38,19 +38,19 @@ func CheckAuth(c *gin.Context) {
 	})
 
 	if err != nil || !token.Valid {
-		c.Redirect(http.StatusFound, "/login")
+		c.Redirect(http.StatusFound, models.BasePath() + "/login")
 		c.Error(err)
 		return
 	}
 
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
-		c.Redirect(http.StatusFound, "/login")
+		c.Redirect(http.StatusFound, models.BasePath() + "/login")
 		return
 	}
 
 	if float64(time.Now().Unix()) > claims["exp"].(float64) {
-		c.Redirect(http.StatusFound, "/login")
+		c.Redirect(http.StatusFound, models.BasePath() + "/login")
 		return
 	}
 
@@ -61,7 +61,7 @@ func CheckAuth(c *gin.Context) {
 		First(&list).
 		Error
 	if err != nil {
-		c.Redirect(http.StatusFound, "/login")
+		c.Redirect(http.StatusFound, models.BasePath() + "/login")
 		return
 	}
 
@@ -136,7 +136,7 @@ func LoginPOST(c *gin.Context) {
 	session.Set("token", token)
 	session.Save()
 
-	c.Redirect(http.StatusFound, "/")
+	c.Redirect(http.StatusFound, models.BasePath() + "/")
 }
 
 func RegisterGET(c *gin.Context) {
@@ -222,12 +222,12 @@ func RegisterPOST(c *gin.Context) {
 		return
 	}
 
-	c.Redirect(http.StatusFound, "/login")
+	c.Redirect(http.StatusFound, models.BasePath() + "/login")
 }
 
 func Logout(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Delete("token")
 	session.Save()
-	c.Redirect(http.StatusFound, "/login")
+	c.Redirect(http.StatusFound, models.BasePath() + "/login")
 }

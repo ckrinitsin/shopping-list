@@ -42,9 +42,9 @@ func ConnectDatabase() {
 
 func BasePath() string {
 	basePath := os.Getenv("BASE_PATH")
-	if basePath == "" {
-		basePath = "/"
-	}
+	// if basePath == "" {
+		// basePath = "/"
+	// }
 
 	return basePath
 }
