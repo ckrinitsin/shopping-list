@@ -2,26 +2,29 @@ package shopping_list
 
 import (
 	"net/http"
-	"os"
 
 	"github.com/ckrinitsin/shopping-list/models"
 	"github.com/gin-gonic/gin"
 )
 
-func getBasePath() string {
-	basePath := os.Getenv("BASE_PATH")
-	if basePath == "" {
-		basePath = "/"
-	}
-
-	return basePath
-}
 
 func LoadElements(c *gin.Context) {
-	title := "Shopping List"
 	var entries []models.Entry
 
+	any_list, ok := c.Get("current_list")
+	if !ok {
+		c.String(http.StatusInternalServerError, "Internal Server Error")
+		return
+	}
+
+	list, ok := any_list.(models.List)
+	if !ok {
+		c.String(http.StatusInternalServerError, "Internal Server Error")
+		return
+	}
+
 	err := models.DB.
+		Where("list_name = ?", list.Name).
 		Order("checked asc").
 		Find(&entries).
 		Error
@@ -33,18 +36,31 @@ func LoadElements(c *gin.Context) {
 	}
 
 	c.HTML(http.StatusOK, "template.html", gin.H{
-		"name":      title,
+		"name":      list.Name,
 		"entries":   entries,
-		"base_path": getBasePath(),
+		"base_path": models.BasePath(),
 	})
 }
 
 func CreateEntry(c *gin.Context) {
 	value := c.PostForm("newItem")
 
+	any_list, ok := c.Get("current_list")
+	if !ok {
+		c.String(http.StatusInternalServerError, "Internal Server Error")
+		return
+	}
+
+	list, ok := any_list.(models.List)
+	if !ok {
+		c.String(http.StatusInternalServerError, "Internal Server Error")
+		return
+	}
+
 	entry := models.Entry{
 		Text:    value,
 		Checked: false,
+		ListName: list.Name,
 	}
 
 	err := models.DB.
@@ -56,21 +72,54 @@ func CreateEntry(c *gin.Context) {
 		return
 	}
 
-	c.Redirect(http.StatusFound, getBasePath() + "/")
+	c.Redirect(http.StatusFound, models.BasePath() + "/")
 }
 
 func DeleteEntries(c *gin.Context) {
-	models.DB.Delete(&models.Entry{}, "checked = 1")
+	any_list, ok := c.Get("current_list")
+	if !ok {
+		c.String(http.StatusInternalServerError, "Internal Server Error")
+		return
+	}
 
-	c.Redirect(http.StatusFound, getBasePath() + "/")
+	list, ok := any_list.(models.List)
+	if !ok {
+		c.String(http.StatusInternalServerError, "Internal Server Error")
+		return
+	}
+
+	err := models.DB.
+		Where("list_name = ?", list.Name).
+		Delete(&models.Entry{}, "checked = 1").
+		Error
+
+	if err != nil {
+		c.String(http.StatusInternalServerError, "Internal Server Error")
+		return
+	}
+
+	c.Redirect(http.StatusFound, models.BasePath() + "/")
 }
 
 func ToggleEntry(c *gin.Context) {
 	id := c.PostForm("id")
 
+	any_list, ok := c.Get("current_list")
+	if !ok {
+		c.String(http.StatusInternalServerError, "Internal Server Error")
+		return
+	}
+
+	list, ok := any_list.(models.List)
+	if !ok {
+		c.String(http.StatusInternalServerError, "Internal Server Error")
+		return
+	}
+
 	var entry models.Entry
 
 	err := models.DB.
+		Where("list_name = ?", list.Name).
 		First(&entry, id).
 		Error
 
@@ -89,5 +138,5 @@ func ToggleEntry(c *gin.Context) {
 		return
 	}
 
-	c.Redirect(http.StatusFound, getBasePath() + "/")
+	c.Redirect(http.StatusFound, models.BasePath() + "/")
 }
