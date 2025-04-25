@@ -20,13 +20,13 @@ func CheckAuth(c *gin.Context) {
 	token_session := session.Get("token")
 
 	if token_session == nil {
-		c.Redirect(http.StatusFound, models.BasePath() + "/login")
+		c.Redirect(http.StatusFound, models.BasePath()+"/login")
 		return
 	}
 
 	token_string, ok := token_session.(string)
 	if !ok {
-		c.Redirect(http.StatusFound, models.BasePath() + "/login")
+		c.Redirect(http.StatusFound, models.BasePath()+"/login")
 		return
 	}
 
@@ -38,19 +38,19 @@ func CheckAuth(c *gin.Context) {
 	})
 
 	if err != nil || !token.Valid {
-		c.Redirect(http.StatusFound, models.BasePath() + "/login")
+		c.Redirect(http.StatusFound, models.BasePath()+"/login")
 		c.Error(err)
 		return
 	}
 
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
-		c.Redirect(http.StatusFound, models.BasePath() + "/login")
+		c.Redirect(http.StatusFound, models.BasePath()+"/login")
 		return
 	}
 
 	if float64(time.Now().Unix()) > claims["exp"].(float64) {
-		c.Redirect(http.StatusFound, models.BasePath() + "/login")
+		c.Redirect(http.StatusFound, models.BasePath()+"/login")
 		return
 	}
 
@@ -61,7 +61,7 @@ func CheckAuth(c *gin.Context) {
 		First(&list).
 		Error
 	if err != nil {
-		c.Redirect(http.StatusFound, models.BasePath() + "/login")
+		c.Redirect(http.StatusFound, models.BasePath()+"/login")
 		return
 	}
 
@@ -136,7 +136,7 @@ func LoginPOST(c *gin.Context) {
 	session.Set("token", token)
 	session.Save()
 
-	c.Redirect(http.StatusFound, models.BasePath() + "/")
+	c.Redirect(http.StatusFound, models.BasePath()+"/")
 }
 
 func RegisterGET(c *gin.Context) {
@@ -152,6 +152,7 @@ func RegisterGET(c *gin.Context) {
 func RegisterPOST(c *gin.Context) {
 	username := strings.TrimSpace(c.PostForm("username"))
 	password := c.PostForm("password")
+	password_confirm := c.PostForm("password_confirm")
 	global_password := strings.TrimSpace(c.PostForm("global_password"))
 
 	if username == "" {
@@ -164,6 +165,13 @@ func RegisterPOST(c *gin.Context) {
 	if len(password) <= 0 && len(password) <= 72 {
 		c.HTML(http.StatusBadRequest, "register.html", gin.H{
 			"error": "Invalid password",
+		})
+		return
+	}
+
+	if password != password_confirm {
+		c.HTML(http.StatusBadRequest, "register.html", gin.H{
+			"error": "The passwords do not match!",
 		})
 		return
 	}
@@ -222,12 +230,12 @@ func RegisterPOST(c *gin.Context) {
 		return
 	}
 
-	c.Redirect(http.StatusFound, models.BasePath() + "/login")
+	c.Redirect(http.StatusFound, models.BasePath()+"/login")
 }
 
 func Logout(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Delete("token")
 	session.Save()
-	c.Redirect(http.StatusFound, models.BasePath() + "/login")
+	c.Redirect(http.StatusFound, models.BasePath()+"/login")
 }
