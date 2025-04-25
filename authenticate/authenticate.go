@@ -162,7 +162,7 @@ func RegisterPOST(c *gin.Context) {
 		return
 	}
 
-	if len(password) <= 0 && len(password) <= 72 {
+	if len(password) <= 0 || len(password) > 72 {
 		c.HTML(http.StatusBadRequest, "register.html", gin.H{
 			"error": "Invalid password",
 		})
