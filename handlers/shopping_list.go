@@ -103,6 +103,7 @@ func DeleteEntries(c *gin.Context) {
 
 func ToggleEntry(c *gin.Context) {
 	id := c.PostForm("id")
+	checked := c.PostForm("checked")
 
 	any_list, ok := c.Get("current_list")
 	if !ok {
@@ -128,7 +129,7 @@ func ToggleEntry(c *gin.Context) {
 		return
 	}
 
-	entry.Checked = !entry.Checked
+	entry.Checked = checked[0] == 'f'
 	err = models.DB.
 		Save(&entry).
 		Error
