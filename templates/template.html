@@ -178,6 +178,7 @@
                 {{ .Text }}
                 <form action="{{ $.base_path }}toggle" method="POST">
                     <input type="hidden" name="id" value="{{ .ID }}" />
+                    <input type="hidden" name="checked" value="{{ .Checked }}" />
                     <button type="submit" />
                 </form>
                 </li>
